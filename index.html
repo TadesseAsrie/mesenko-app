@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesenko - Ethiopian Traditional Musical Instrument</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <div class="ethiopian-border"></div>
+
+    <div id="splash-screen">
+        <h1>MESENKO መሠንቆ</h1>
+        <div class="loader-mesenko"></div>
+        <p>Honoring Ethiopian Musical Heritage...</p>
+    </div>
+
+    <header>
+        <div class="logo-container">
+            <h1 onclick="switchSection('home')">MESENKO</h1>
+        </div>
+        <nav>
+            <button id="nav-home" class="active" onclick="switchSection('home')">Home</button>
+            <button id="nav-play" onclick="switchSection('play')">Play Simulator</button>
+            <button id="nav-info" onclick="switchSection('info')">History & Culture</button>
+            <button id="nav-about" onclick="switchSection('about')">About</button>
+        </nav>
+        <div class="controls-top">
+            <button class="btn-round" id="theme-toggle" title="Toggle Light/Dark Mode" onclick="toggleTheme()">🌓</button>
+            <button class="btn-round" id="fullscreen-toggle" title="Fullscreen" onclick="toggleFullscreen()">⛶</button>
+        </div>
+    </header>
+
+    <main>
+        
+        <section id="section-home" class="app-section active-section">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <h2>Experience the Soul of Ethiopia Through Sound</h2>
+                    <p>The <b>Mesenko</b> (መሠንቆ) is a majestic, single-string bowed lute crafted from wood, horsehair, and raw leather. For centuries, it has carried the tales, poetry, and history of the Ethiopian people through wandering minstrel-poets known as <i>Azmaris</i>.</p>
+                    <button class="btn-primary" onclick="switchSection('play')">Enter Studio & Play</button>
+                </div>
+                <div class="hero-graphic-container">
+                    <div class="glow-bg"></div>
+                    <svg viewBox="0 0 200 400" width="220" height="440" class="hero-svg">
+                        <polygon points="100,50 115,20 85,20" fill="var(--wood-dark)"/>
+                        <line x1="100" y1="20" x2="100" y2="300" stroke="var(--wood-light)" stroke-width="10"/>
+                        <polygon points="60,300 140,300 120,380 80,380" fill="var(--leather)" stroke="var(--wood-dark)" stroke-width="3"/>
+                        <line x1="100" y1="20" x2="100" y2="350" stroke="#4a2c11" stroke-width="2"/>
+                        <path d="M 50,220 Q 100,200 150,180" stroke="var(--wood-dark)" stroke-width="6" fill="none"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="ornament-divider"></div>
+        </section>
+
+        <section id="section-play" class="app-section">
+            <div class="simulator-grid">
+                
+                <div class="canvas-container">
+                    <canvas id="mesenko-canvas" width="400" height="600"></canvas>
+                    <div class="canvas-hint">
+                        <span>💡 Click / Drag Bow across the single central string to play</span>
+                    </div>
+                </div>
+
+                <div class="dashboard-container">
+                    
+                    <div class="panel">
+                        <h3>Instrument Adjustments & Synthesis Engine</h3>
+                        <div class="control-group">
+                            <label><span>Master Volume</span><span id="val-volume">70%</span></label>
+                            <input type="range" id="slider-volume" min="0" max="1" step="0.05" value="0.7">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Tuning / Base Pitch Offset</span><span id="val-pitch">0</span></label>
+                            <input type="range" id="slider-pitch" min="-12" max="12" step="1" value="0">
+                        </div>
+                        <div class="control-group">
+                            <label><span>Acoustic Ambient Reverb (Echo)</span><span id="val-reverb">35%</span></label>
+                            <input type="range" id="slider-reverb" min="0" max="1" step="0.05" value="0.35">
+                        </div>
+                        <div class="panel-buttons">
+                            <button class="btn-action btn-reset" onclick="resetAudioSettings()">Reset Settings</button>
+                            <button class="btn-action btn-mute" id="btn-mute" onclick="toggleMute()">Mute Synth</button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Azmari Native Scales Keyboard Performance Mapping</h3>
+                        <p class="panel-subtitle">Trigger realistic expressive intervals traditional to Tizita & Ambassel scale families.</p>
+                        <div class="keyboard-map">
+                            <div class="key-cap" id="key-A" onmousedown="triggerNoteByIndex(0)" onmouseup="releaseNoteIndex(0)">A<span>E4</span></div>
+                            <div class="key-cap" id="key-S" onmousedown="triggerNoteByIndex(1)" onmouseup="releaseNoteIndex(1)">S<span>F#4</span></div>
+                            <div class="key-cap" id="key-D" onmousedown="triggerNoteByIndex(2)" onmouseup="releaseNoteIndex(2)">D<span>G#4</span></div>
+                            <div class="key-cap" id="key-F" onmousedown="triggerNoteByIndex(3)" onmouseup="releaseNoteIndex(3)">F<span>A4</span></div>
+                            <div class="key-cap" id="key-G" onmousedown="triggerNoteByIndex(4)" onmouseup="releaseNoteIndex(4)">G<span>B4</span></div>
+                            <div class="key-cap" id="key-H" onmousedown="triggerNoteByIndex(5)" onmouseup="releaseNoteIndex(5)">H<span>C#5</span></div>
+                            <div class="key-cap" id="key-J" onmousedown="triggerNoteByIndex(6)" onmouseup="releaseNoteIndex(6)">J<span>D#5</span></div>
+                            <div class="key-cap" id="key-K" onmousedown="triggerNoteByIndex(7)" onmouseup="releaseNoteIndex(7)">K<span>E5</span></div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Session Audio Archival Recorder</h3>
+                        <div class="recording-bar">
+                            <button class="btn-action btn-record" id="rec-start" onclick="startRecording()">● Record</button>
+                            <button class="btn-action btn-stop" id="rec-stop" onclick="stopRecording()" disabled>■ Stop</button>
+                            <button class="btn-action btn-play-rec" id="rec-play" onclick="playRecording()" disabled>▶ Play Session</button>
+                            <button class="btn-action btn-dl" id="rec-dl" onclick="downloadRecording()" disabled>💾 Save File</button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Guided Learning Matrix & Demo Tracks</h3>
+                        <div class="learning-buttons">
+                            <button class="btn-action btn-demo" onclick="playDemoSong()">Autoplay Classic Tizita</button>
+                            <button class="btn-action btn-stop" onclick="stopDemoSong()">Stop Demo</button>
+                            <button class="btn-action btn-learn" onclick="toggleLearningMode()">Toggle Learn Mode</button>
+                        </div>
+                        <div id="learning-status">
+                            <div class="learning-score-row">
+                                <span>Target Key: <mark id="learn-target">-</mark></span>
+                                <span>Score Progression: <span id="learn-score">0</span> pts</span>
+                            </div>
+                            <div id="learn-prompt">Press the key shown to replicate the traditional melody sequence!</div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h3>Live Signal Visualizer & Performance Telemetry</h3>
+                        <canvas id="visualizer-canvas"></canvas>
+                        <div class="stats">
+                            <span id="stat-fps">FPS: 60</span>
+                            <span id="stat-engine">Synth Engine: Idle</span>
+                            <span id="stat-sample">48000Hz PCM</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="section-info" class="app-section">
+            <div class="panel info-content">
+                <div class="info-layout">
+                    <div>
+                        <h2>The Heritage & Archetype of the Mesenko</h2>
+                        <div class="ornament-divider info-divider"></div>
+                        <p>The <b>Mesenko</b> holds an unparalleled station of reverence within the complex landscape of Horn of Africa ethnomusicology. As a monocord lute explicitly defined by its diamond-shaped sounding body, the physical design is an ingenious harmonization of natural locally sourced items. Traditionally, the structural diamond resonance frame is constructed of rigorous acacia or cordia hardwood, covered tautly with treated goatskin or cowhide leather.</p>
+                        
+                        <h3>The Guild of the Azmaris</h3>
+                        <p>Historically, execution of the Mesenko belongs profoundly to the <i>Azmari</i> caste—charismatic musical bards and poets who function as active societal chroniclers. Possessing supreme skills in lyrical improvisation, an Azmari utilizes the stringed inflections of the Mesenko to amplify coded linguistic dualities known as <i>Semenna Worq</i> (Wax and Gold), providing political critique, emotional solace, and cultural endurance during communal gatherings inside <i>Azmari Bets</i>.</p>
+
+                        <h3>Playing Technique & Dynamic Tuning</h3>
+                        <p>Unlike standard modern violin setups, the single thick horsehair string is compressed and excited using a tightly bowed wooden arch. Pitch changes are facilitated not by pressing the string directly against the raw timber neck, but rather through agile light lateral touch deviations from the performer's fingers directly floating over the vibrating axis.</p>
+                    </div>
+                    <div class="spec-sidebar">
+                        <h4>Core Ethnomusicological Specs</h4>
+                        <hr>
+                        <p><b>Acoustic Family:</b> Bowed Monochord Lute</p>
+                        <p><b>Primary Scale Systems:</b> Tizita, Ambassel, Bati, Anchihoye</p>
+                        <p><b>Traditional String Material:</b> Black/White Braided Horsehair</p>
+                        <p><b>Resonator Cover:</b> Raw stretched sun-dried parchment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-about" class="app-section">
+            <div class="panel about-panel">
+                <h2>Project Information</h2>
+                <p><b>Application Title:</b> Mesenko Virtual Studio Experience Engine</p>
+                <p><b>Core Technologies:</b> Pure Semantic HTML5, Declarative CSS3 Architecture, Vanilla ECMAScript Engine, Web Audio API DSP nodes, HTML5 High-Performance Canvas System.</p>
+                <p><b>Version Compliance:</b> v2.4.0 (Production Release)</p>
+                <p><b>License Model:</b> Creative Commons Attributions Academic Framework</p>
+                <div class="ornament-divider"></div>
+                <p class="about-footer">Designed with careful cultural respect and attention to traditional technical synthesis specifications.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
